@@ -1,0 +1,32 @@
+{
+  "name": "habit-tracker",
+  "version": "1.0.0",
+  "description": "A habit tracking application built for the Auriga IT Builder Round.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-db": "node db/init.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarshKhandelwal05/Habit-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HarshKhandelwal05/Habit-tracker/issues"
+  },
+  "homepage": "https://github.com/HarshKhandelwal05/Habit-tracker#readme",
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="topbar">
+        <h1>Habit Tracker</h1>
+        <nav>
+          <a href="/">Dashboard</a>
+          <a href="/habits">Habits</a>
+          <a href="/habits/new">New Habit</a>
+        </nav>
+      </header>
+
+      <% if (error) { %>
+        <div class="alert error"><%= error %></div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert success"><%= success %></div>
+      <% } %>
+
+      <main>
+        <section class="summary reminder-panel">
+          <h2>Morning Reminders</h2>
+          <% if (pendingHabits.length === 0) { %>
+            <p>All today's habits are logged!</p>
+          <% } else { %>
+            <div class="habit-list">
+              <% pendingHabits.forEach((habit) => { %>
+                <div class="habit-card reminder-card">
+                  <div>
+                    <h3><%= habit.name %></h3>
+                    <p class="meta"><%= habit.schedule_type %></p>
+                  </div>
+                  <form action="/habits/<%= habit.id %>/complete" method="POST">
+                    <button type="submit">Log now</button>
+                  </form>
+                </div>
+              <% }) %>
+            </div>
+          <% } %>
+        </section>
+
+        <section class="summary">
+          <h2>Today's habits</h2>
+          <% if (habits.length === 0) { %>
+            <p>No habits scheduled for today.</p>
+          <% } else { %>
+            <div class="habit-list">
+              <% habits.forEach((habit) => { %>
+                <div class="habit-card <%= habit.is_complete ? 'done' : '' %>">
+                  <div>
+                    <h3><%= habit.name %></h3>
+                    <p class="meta"><%= habit.schedule_type %></p>
+                    <p class="meta">Current streak: <strong><%= habit.current_streak %></strong></p>
+                    <p class="meta">Best streak: <strong><%= habit.best_streak %></strong></p>
+                  </div>
+
+                  <% if (habit.is_complete) { %>
+                    <form action="/habits/<%= habit.id %>/uncomplete" method="POST">
+                      <button type="submit" class="secondary">Unmark</button>
+                    </form>
+                  <% } else { %>
+                    <form action="/habits/<%= habit.id %>/complete" method="POST">
+                      <button type="submit">Mark done</button>
+                    </form>
+                  <% } %>
+                </div>
+              <% }) %>
+            </div>
+          <% } %>
+        </section>
+
+        <section class="summary">
+          <h2>All habits</h2>
+          <% if (allHabits.length === 0) { %>
+            <p>No habits yet.</p>
+          <% } else { %>
+            <div class="habit-list compact">
+              <% allHabits.forEach((habit) => { %>
+                <div class="habit-card compact-item">
+                  <div>
+                    <h3><%= habit.name %></h3>
+                    <p class="meta"><%= habit.schedule_type %> • <%= habit.is_archived ? 'Archived' : 'Active' %></p>
+                    <p class="meta">Current: <%= habit.current_streak %> • Best: <%= habit.best_streak %></p>
+                  </div>
+                  <div class="actions-row">
+                    <a href="/habits/<%= habit.id %>/edit">Edit</a>
+                    <% if (habit.is_archived) { %>
+                      <form action="/habits/<%= habit.id %>/restore" method="POST">
+                        <button type="submit" class="secondary">Restore</button>
+                      </form>
+                    <% } else { %>
+                      <form action="/habits/<%= habit.id %>/archive" method="POST">
+                        <button type="submit" class="secondary">Archive</button>
+                      </form>
+                    <% } %>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          <% } %>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="topbar">
+        <h1><%= title %></h1>
+        <nav>
+          <a href="/">Dashboard</a>
+          <a href="/habits">Habits</a>
+        </nav>
+      </header>
+
+      <% if (error) { %>
+        <div class="alert error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="<%= mode === 'edit' ? '/habits/' + habit.id + '/update' : '/habits' %>" class="habit-form">
+        <div class="form-row">
+          <label for="name">Habit name</label>
+          <input id="name" name="name" type="text" value="<%= habit ? habit.name || '' : '' %>" required />
+        </div>
+
+        <div class="form-row">
+          <label for="schedule_type">Schedule</label>
+          <select id="schedule_type" name="schedule_type">
+            <option value="daily" <%= habit && habit.schedule_type === 'daily' ? 'selected' : '' %>>Daily</option>
+            <option value="weekdays" <%= habit && habit.schedule_type === 'weekdays' ? 'selected' : '' %>>Weekdays</option>
+            <option value="custom_weekdays" <%= habit && habit.schedule_type === 'custom_weekdays' ? 'selected' : '' %>>Custom weekdays</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="custom_weekdays">Custom weekdays (comma-separated: 0=Sun ... 6=Sat)</label>
+          <input id="custom_weekdays" name="custom_weekdays" type="text" value="<%= habit ? habit.custom_weekdays || '' : '' %>" placeholder="1,3,5" />
+        </div>
+
+        <div class="form-row">
+          <label for="start_date">Start date</label>
+          <input id="start_date" name="start_date" type="date" value="<%= habit ? habit.start_date || '' : '' %>" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit"><%= mode === 'edit' ? 'Save changes' : 'Create habit' %></button>
+          <a href="/" class="button-link">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="topbar">
+        <h1>Habits</h1>
+        <nav>
+          <a href="/">Dashboard</a>
+          <a href="/habits">All Habits</a>
+          <a href="/habits/new">New Habit</a>
+        </nav>
+      </header>
+
+      <% if (error) { %>
+        <div class="alert error"><%= error %></div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert success"><%= success %></div>
+      <% } %>
+
+      <section class="search-box">
+        <form method="GET" action="/habits" class="search-form">
+          <input type="text" name="q" value="<%= query %>" placeholder="Search habits" />
+          <button type="submit">Search</button>
+        </form>
+      </section>
+
+      <section class="summary">
+        <% if (habits.length === 0) { %>
+          <p>No habits found.</p>
+        <% } else { %>
+          <div class="habit-list compact">
+            <% habits.forEach((habit) => { %>
+              <div class="habit-card compact-item">
+                <div>
+                  <h3><%= habit.name %></h3>
+                  <p class="meta"><%= habit.schedule_type %> • <%= habit.is_archived ? 'Archived' : 'Active' %></p>
+                </div>
+                <div class="actions-row">
+                  <a href="/habits/<%= habit.id %>/edit">Edit</a>
+                  <% if (habit.is_archived) { %>
+                    <form action="/habits/<%= habit.id %>/restore" method="POST">
+                      <button type="submit" class="secondary">Restore</button>
+                    </form>
+                  <% } else { %>
+                    <form action="/habits/<%= habit.id %>/archive" method="POST">
+                      <button type="submit" class="secondary">Archive</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </div>
+  </body>
+</html>
